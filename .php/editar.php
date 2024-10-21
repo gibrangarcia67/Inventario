@@ -1,43 +1,28 @@
-
 <?php
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $parte = $_POST['parte'];
-    $serie = $_POST['serie'];
-    $almacen = $_POST['almacen'];
-    $tipo_tarjeta = $_POST['tipo_tarjeta'];
-    $obs_equipo = $_POST['obs_equipo'];
-    $guia = $_POST['guia'];
-    $tipo_movimiento = $_POST['tipo_movimiento'];
-    $obs_movimiento = $_POST['obs_movimiento'];
-    
-    $servername = "localhost"; 
-    $username = "root";      
-    $password = "";   
-    $database = "larbase";  
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "larbase";
 
-    $conn = new mysqli($servername, $username, $password, $database);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-    if ($conn->connect_error) {
-        die("Conexión fallida: " . $conn->connect_error);
-    }
-
-    $sql = "INSERT INTO `base`(`parte`, `serie`, `almacen`, `tipo_tarjeta`, `obs_equipo`, `guia`, `tipo_movimiento`, `obs_movimiento`) VALUES ('$parte','$serie','$almacen','$tipo_tarjeta','$obs_equipo','$guia','$tipo_movimiento','$obs_movimiento')";
-
-    if ($conn->query($sql) === TRUE) {
-        // echo "Nuevo registro insertado con éxito";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-
-    $conn->close();
-
-    header("Location: index.php");
-    exit();
-
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
 }
-?>
 
+$id = $_GET['id'];
+
+if (!isset($id) || !is_numeric($id)) {
+    die("ID inválido.");
+}
+
+$sql = "SELECT * FROM base WHERE id=$id";
+$result = $conn->query($sql);
+
+$row = $result->fetch_assoc();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,22 +54,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     Menu de navegacion
                 </p>
             </div>
-            <a href="index.php" class="opc_active">
-                <div class="active">
-                    
-                </div>
+            <a href="/" class="opc">
                 <img src="../img/almacen.png" alt="" class="opc_img">
                 <p>
                     Almacen
                 </p>
             </a>
-            <a href="/movimientos" class="opc">
+            <a href="/movimientos" class="opc_active">
+                <div class="active">
+                    
+                </div>
                 <img src="../img/menu (1).png" alt="" class="opc_img">
                 <p>
                     Movimientos
                 </p>
             </a>
-            <!-- <a href="" class="opc">
+            <!-- {{-- <a href="" class="opc">
                 <img src="../img/grupo.png" alt="" class="opc_img">
                 <p>
                     Usuarios
@@ -95,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>
                     Mi cuenta
                 </p>
-            </a> -->
+            </a> --}} -->
             <div class="sep">
                 <p class="sep_col">
                     Mas
@@ -110,10 +95,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <div class="section">
             <p class="title">
-                Añadir Elemento
+                Editar Elemento
             </p>
             <div class="content">
-                <form action="addelement.php" method="POST">
+                <form action="edicion.php?id=<?php echo $id;?>" method="POST">
+                <input type="hidden" name="id" value="{{$reg_find -> id}}">
                 <div class="flex_content">
                     <p class="title_2">
                         Datos del ingreso
@@ -123,49 +109,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p class="in_label">
                         Parte
                     </p>
-                    <input type="text" class="in_input" name="parte" required>
+                    <input type="text" class="in_input" name="parte" value="<?php echo $row['parte'] ?>">
                 </div>
                 <div class="in">
                     <p class="in_label">
                         Serie
                     </p>
-                    <input type="text" class="in_input" name="serie" required>
+                    <input type="text" class="in_input" name="serie" value="<?php echo $row['serie'] ?>">
                 </div>
                 <div class="in">
                     <p class="in_label">
                         Almacen
                     </p>
-                    <input type="text" class="in_input" name="almacen" required>
+                    <input type="text" class="in_input" name="almacen" value="<?php echo $row['almacen'] ?>">
                 </div>
                 <div class="in">
                     <p class="in_label">
                         Tipo de tarjeta
                     </p>
-                    <input type="text" class="in_input" name="tipo_tarjeta" required>
+                    <input type="text" class="in_input" name="tipo_tarjeta" value="<?php echo $row['tipo_tarjeta'] ?>">
                 </div>
                 <div class="in">
                     <p class="in_label">
                         Observacion equipo
                     </p>
-                    <input type="text" class="in_input" name="obs_equipo" required>
+                    <input type="text" class="in_input" name="obs_equipo" value="<?php echo $row['obs_equipo'] ?>">
                 </div>
                 <div class="in">
                     <p class="in_label">
                         Guia
                     </p>
-                    <input type="text" class="in_input" name="guia" required>
+                    <input type="text" class="in_input" name="guia" value="<?php echo $row['guia'] ?>">
                 </div>
                 <div class="in">
                     <p class="in_label">
-                        Tipo de movimientos
+                        Tipo Movimiento
                     </p>
-                    <input type="text" class="in_input" name="tipo_movimiento" required>
+                    <input type="text" class="in_input" name="tipo_movimiento" value="<?php echo $row['tipo_movimiento'] ?>">
                 </div>
                 <div class="in">
                     <p class="in_label">
                         Observacion Movimiento
                     </p>
-                    <input type="text" class="in_input" name="obs_movimiento" required>
+                    <input type="text" class="in_input" name="obs_movimiento" value="<?php echo $row['obs_movimiento'] ?>">
                 </div>
                 
                 <div class="in">

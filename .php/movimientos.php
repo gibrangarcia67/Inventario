@@ -83,12 +83,12 @@ $result_2 = $conn->query($sql_2);
                     Mas
                 </p>
             </div>
-            <a href="" class="opc">
+            <!-- <a href="" class="opc">
                 <img src="../img/signo.png" alt="" class="opc_img">
                 <p>
                     Ayuda
                 </p>
-            </a>
+            </a> -->
         </div>
         <div class="section">
             <form action="delete.php" method="POST">
@@ -170,7 +170,7 @@ $result_2 = $conn->query($sql_2);
                                             echo "<td>" . $row_1["guia"] . "</td>";
                                             echo "<td>" . $row_1["tipo_movimiento"] . "</td>";
                                             echo "<td>" . $row_1["obs_movimiento"] . "</td>";
-                                            echo "<td><a href='editar/".$row_1["id"] ."'>Editar</a></td>";
+                                            echo "<td><a href='editar.php?id=" . $row_1['id'] . "''>Editar</a></td>";
                                             echo "</tr>";
                                         }
                                     } else {

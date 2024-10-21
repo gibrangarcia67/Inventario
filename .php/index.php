@@ -82,12 +82,12 @@ $result = $conn->query($sql);
                     Mas
                 </p>
             </div>
-            <a href="" class="opc">
+            <!-- <a href="" class="opc">
                 <img src="../img/signo.png" alt="" class="opc_img">
                 <p>
                     Ayuda
                 </p>
-            </a>
+            </a> -->
         </div>
         <div class="section">
             <p class="title">
